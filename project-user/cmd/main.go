@@ -5,6 +5,12 @@ import (
 	_ "81jcpd.cn/project-user/api"
 	"81jcpd.cn/project-user/router"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
+)
+
+var (
+	port    = viper.GetString("server.port")
+	srvName = viper.GetString("server.project-name")
 )
 
 func main() {
@@ -13,5 +19,5 @@ func main() {
 	//	根据路由列表，初始化引擎
 	router.InitRouter(r)
 	//	运行
-	srv.Run(r, ":8081", "project-user")
+	srv.Run(r, port, srvName)
 }

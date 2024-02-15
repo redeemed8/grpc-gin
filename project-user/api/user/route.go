@@ -19,6 +19,6 @@ type RouterUser struct {
 
 // Router	实现的 Router接口方法
 func (*RouterUser) Router(r *gin.Engine) {
-	handler := &service.UserHandler{}
+	handler := service.New(service.CacheRedis)
 	r.POST("/login/getCaptcha", handler.GetCaptcha)
 }
