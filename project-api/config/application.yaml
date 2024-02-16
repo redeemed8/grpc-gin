@@ -1,0 +1,19 @@
+server:
+  port: ":8082"
+  project-name: "project-api"
+
+# mysql config  -- windows
+#mysql:
+#  dns: root:123456@tcp(127.0.0.1:3306)
+#  basename: beadhouse
+#  others: charset=utf8mb4&parseTime=True&loc=Local
+
+## redis config  -- windows
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  DB: 0
+  poolSize: 10
+  minIdleConn: 5
+
+
