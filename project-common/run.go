@@ -13,7 +13,7 @@ import (
 )
 
 // Run	优雅启停
-func Run(r *gin.Engine, addr string, srvName string) {
+func Run(r *gin.Engine, addr string, srvName string, stop func()) {
 
 	srv := &http.Server{
 		Addr:    addr,
@@ -34,6 +34,10 @@ func Run(r *gin.Engine, addr string, srvName string) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
+
+	if stop != nil {
+		stop()
+	}
 
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatalf("%s Shutdown, cause by : %v \n", srvName, err)

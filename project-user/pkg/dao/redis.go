@@ -28,12 +28,16 @@ type RedisCache struct {
 	rdb *redis.Client
 }
 
-func (rc *RedisCache) Put(ctx context.Context, key, value string, expire time.Duration) error {
+func (rc *RedisCache) Put(key, value string, expire time.Duration) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
 	err := rc.rdb.Set(ctx, key, value, expire).Err()
 	return err
 }
 
-func (rc *RedisCache) Get(ctx context.Context, key string) (string, error) {
+func (rc *RedisCache) Get(key string) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
 	result, err := rc.rdb.Get(ctx, key).Result()
 	return result, err
 }

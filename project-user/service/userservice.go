@@ -8,10 +8,8 @@ import (
 	"81jcpd.cn/project-user/pkg/model/vo"
 	"81jcpd.cn/project-user/pkg/repo"
 	"81jcpd.cn/project-user/utils"
-	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis/v8"
 	"log"
 	"net/http"
 	"time"
@@ -58,28 +56,25 @@ const (
 // GetCaptcha	获取验证码
 func (h *UserHandler) GetCaptcha(ctx *gin.Context) {
 	resp := &common.Resp{}
-	//	获取参数 手机号
+	//	1.获取参数 手机号
 	var mobileVo vo.MobileVo
 	if err := ctx.ShouldBind(&mobileVo); err != nil {
 		ctx.JSON(http.StatusOK, resp.Fail(model.InvalidRequest, "无效请求,请携带手机号"))
 		return
 	}
-	//	校验 手机号格式
+	//	2.校验 手机号格式
 	if ok := communutils.VerifyMobile(mobileVo.Mobile); !ok {
 		ctx.JSON(http.StatusOK, resp.Fail(model.NoLegalMobile, "手机号格式错误"))
 		return
 	}
 	code := utils.MakeCodeWithNumber(6, 0)
-	//	调用短信平台模拟
+	//	3.调用短信平台模拟
 	go func() {
 		time.Sleep(2 * time.Second)
 		log.Println("Successfully send captcha to mobile : ", mobileVo.Mobile)
-		//	存入 redis
-		c, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-		defer cancel()
-		err1 := h.cache.Put(c, CaptchaPrefix+mobileVo.Mobile, code, 5*time.Minute)
+		//	4.存入 redis
+		err1 := h.cache.Put(CaptchaPrefix+mobileVo.Mobile, code, 5*time.Minute)
 		if err1 != nil {
-			log.Println(err1 == redis.Nil)
 			log.Printf("Failed to save the mobile and captcha to redis : REGISTER_%s : %s , cause by : %v \n", mobileVo.Mobile, code, err1)
 		}
 	}()

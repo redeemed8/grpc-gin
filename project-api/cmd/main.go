@@ -1,9 +1,10 @@
 package main
 
 import (
+	_ "81jcpd.cn/project-api/api"
+	_ "81jcpd.cn/project-api/pkg/dao"
+	"81jcpd.cn/project-api/router"
 	srv "81jcpd.cn/project-common"
-	_ "81jcpd.cn/project-user/api"
-	"81jcpd.cn/project-user/router"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
@@ -18,8 +19,6 @@ func main() {
 	r := gin.Default()
 	//	根据路由列表，初始化引擎
 	router.InitRouter(r)
-	//	grpc 服务注册
-	grpc := router.RegisterGrpc()
 	//	运行
-	srv.Run(r, port, srvName, grpc.Stop)
+	srv.Run(r, port, srvName, nil)
 }

@@ -1,6 +1,6 @@
 server:
-  port: ":8081"
-  project-name: "project-user"
+  port: ":8082"
+  project-name: "project-api"
 
 # mysql config  -- windows
 #mysql:
@@ -16,7 +16,4 @@ redis:
   poolSize: 10
   minIdleConn: 5
 
-grpc:
-  addr: "127.0.0.1:9091"
-  name: "user"
 

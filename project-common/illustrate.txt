@@ -1,0 +1,12 @@
+-- 日志框架 --
+go get go.uber.org/zap
+
+-- 日志分割库 --
+go get github.com/natefinch/lumberjack
+
+-- etcd --
+go get go.etcd.io/etcd/client/v3
+
+
+
+
